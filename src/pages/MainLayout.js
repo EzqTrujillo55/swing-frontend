@@ -3,6 +3,7 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/rea
 import Login from '../components/Login';
 import firebase from 'firebase';
 import Chat from '../components/Chat';
+import Busqueda from './Busqueda';
 
 const MainLayout = () => {
     const [email, setEmail] = useState('');
@@ -33,24 +34,15 @@ const MainLayout = () => {
 
     return(
         <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Blank</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Blank</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        
         {
-            !autenticado?
+            autenticado?
             (
             <Login setEmail={setEmail} setPassword={setPassword} login={login}/>
             ):
             (
-            <Chat logout= {logout} autenticado={autenticado} />
+            <Busqueda/>
             )
         }
         </IonContent>
