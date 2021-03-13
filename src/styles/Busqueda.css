@@ -1,0 +1,32 @@
+#header {
+  background-color: yellow !important;
+  color: black;
+  height: 60px;
+  text-align: center;
+  padding-top: 1%;
+}
+
+ion-content {
+  --ion-background-color: #141633;
+}
+
+.main-container {
+  padding: 2%;
+}
+
+.search-box {
+  color: white;
+  padding-left: 1%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  border-bottom: 1px solid yellow;
+}
+
+.results-box {
+  color: white;
+}
+
+.results-box h5:hover {
+  opacity: 0.5;
+  color: lightyellow;
+}

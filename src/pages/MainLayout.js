@@ -34,7 +34,7 @@ const MainLayout = () => {
 
     return(
         <IonPage>
-      <IonContent fullscreen>
+      <IonContent>
         
         {
             autenticado?
