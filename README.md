@@ -168,6 +168,9 @@ _Android Studio_
 ## Video Demostrativo
 https://youtu.be/MjAqAUIy9Is
 
+## Video Explicativo
+https://youtu.be/O18md32dnb4
+
 ## Responsabilidades
 ![Screenshot](tabla.png)
 
