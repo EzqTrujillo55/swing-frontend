@@ -168,6 +168,10 @@ _Android Studio_
 ## Video Demostrativo
 https://youtu.be/MjAqAUIy9Is
 
+## Responsabilidades
+![Screenshot](tabla.png)
+
+
 ## Construido con 🛠️
 
 _Menciona las herramientas que utilizaste para crear tu proyecto_
