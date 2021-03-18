@@ -108,7 +108,7 @@ _Android Studio_
 _Menciona las herramientas que utilizaste para crear tu proyecto_
 
 * [Android Studio](https://developer.android.com/studio) - Entorno de desarrollo para aplicaciones nativas
-* [Java](https://www.java.com/es/download/) - Lenguaje de programación empleado para aplicaciones nativas con Android
+* [Ionic Framework](https://ionicframework.com/) - Framework de desarrollo de aplicaciones hibridas. 
 
 
 ## Autores ✒️
