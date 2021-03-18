@@ -162,8 +162,8 @@ _Android Studio_
    ```
 
 ## Preview
-![Screenshot](preview.jpeg)
-https://i.imgur.com/7D7RDXf.jpg
+![Screenshot](Screenshot.jpeg)
+
 
 ## Video Demostrativo
 
