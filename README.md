@@ -34,68 +34,133 @@ _Android Studio_
 
 
 ## Funcionalidades 📖
-1. Lectura y listado de datos
+1. Búsqueda de canciones
     ```
-     //Dentro de la función onCreate especificamos el listener para el ListView
-     //Obtenemos el objeto ListPerson
-     //A dicho objeto le asignamos el contenido del ArrayAdapter
-     //Creamos la referencia a People
-     //Asignamos un Listener a People, y con los métodos onChildAdded y onChildChanged, veirificamos constantemente la información de la BDD
-        final ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, myArrayList);
-        myListView = (ListView) findViewById(R.id.listPerson);
-        myListView.setAdapter(myArrayAdapter);
-        mRef = FirebaseDatabase.getInstance().getReference().child("People");
-        mRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                String value = snapshot.getValue(String.class);
-                myArrayList.add(value);
-                myArrayAdapter.notifyDataSetChanged();
-            }
+     const search = async () => {
+        //const data = { title: query };
+        if(query!=''){
+        setFeedback(' Buscando...');
+        const response = await fetch(`${baseUrl}/search_song`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({title:query.replace(/\s/g, "+")}),
+        }).then(res=> res.json())
+        .then(data => data);
+        
+        console.log(typeof response); 
+        setResultado(response);
+        setFeedback('');
+        }
+    }
+    ```
+2. Descarga de canciones
+    ```
+    const download = async (watch, title) => {
+        setFeedback(' Descargando..');
+        const response = await fetch(`${baseUrl}/download`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({url:watch}),
+        }).then(res=> res.json())
+        .then(data => ultima(data.downloadUrl, title));
+        setFeedback(' Descarga finalizada!');    
+    }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                myArrayAdapter.notifyDataSetChanged();
+    
+    const ultima = (fileUrl, title) => {
+        setFeedback(' Descargando....')
+        //const fileUrl = "https://storage.googleapis.com/swing-9d5d6.appspot.com/C%3A%5CUsers%5CTemporal%5CDesktop%5Cswing-back%5CHasta%20Que%20Me%20Olvides.mp4";
+        const request = {
+            uri: fileUrl,
+            title: title,
+            description: '',
+            mimeType: '',
+            visibleInDownloadsUi: true,
+            //notificationVisibility: NotificationVisibility.VisibleNotifyCompleted,
+            destinationInExternalFilesDir: {
+                dirType: FilesystemDirectory.Documents,
+                subPath: title + '.mp3'
             }
+        };
+  
+    Downloader.download(request)
+                .then((location) => alert('Canción descargada exitosamente!'))
+                .catch((error) => alert('error', error));
+    }
     ```
-2. Agregar contactos 
+3. Agregar a storage de firebase
     ```
-    //Obtenemos el botón de agregar
-    //Invocamos el listener, que genera un número randómico para el id del registro
-    //Obtenemos el contenido del Input, lo convertimos a String y retiramos los espacios laterales
-    //Establece la referencia y almacena el nombre digitado
-    btn = (Button)findViewById(R.id.buttonAgregar);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int min = 1;
-                int max = 1000;
-                txt = (TextInputLayout) findViewById(R.id.txtNombre);
-                String nombre = txt.getEditText().getText().toString().trim();
-                int random_id = (int)(Math.random() * (max - min + 1) + min);
-                String random_id_string = String.valueOf(random_id);
-                mRef = FirebaseDatabase.getInstance().getReference("People").child(random_id_string);
-                mRef.setValue(nombre);
-            }
+    const addFavorites = async (watch, title, userId) => {
+        
+        const response = await fetch(`${baseUrl}/add_favorites`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                url:watch,
+                name: title,
+                userId: getCurrentUser().uid, 
+            }),
+        }).then(res=> res.json())
+        .then(data => {alert(JSON.stringify(data)); add(data)});
+    }
+
+    const add = (data) => {
+        const ref = firebase.firestore().collection('favorites');
+        ref.add(data)
+        .then(response => alert("Añadido a favoritos :)", response))
+        .catch((error) => {
+            alert("Error adding document: ", error);
         });
+    }
     ```
-3. Selección de contacto. 
+
+4. Reproducir canción
     ```
-        //Obtenemos el objeto listPerson
-        //Invocamos el listener para la selección de un item
-        //Inbocamos el método getItemAtPosition() para obtener el contenido del item clickeado
-        //Colocamos el contenido obtenido en el Input
-        myListView = (ListView) findViewById(R.id.listPerson);
-        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedFromList = (String) myListView.getItemAtPosition(position);
-                txt = (TextInputLayout) findViewById(R.id.txtNombre);
-                txt.getEditText().setText(selectedFromList);
-            }
-        });
+    const playSong = (item) => {
+    if (playerIndicator){
+        playerIndicator.stop(); 
+    }
+    playerIndicator = new Howl({
+        src: [item.path] ,
+        html5: true,
+        onplay: () => {
+           setIsPlaying(true); 
+           setActiveTrack(item);  
+        },
+        onend: () => {
+            console.log('onend');
+        }
+      });
+    playerIndicator.play();
+    }
     ```
- 
+5. Editar y eliminar canción
+   ```
+   const remove = (docId) => {
+    const ref = firebase.firestore().collection('favorites').doc(docId);
+    ref.delete();
+    alert('Removido exitosamente');
+    getFavorites(); 
+
+    }
+
+    const updateSong = (docId, path) => {
+    const ref = firebase.firestore().collection('favorites').doc(docId);
+    ref.update({favorites: [
+        {'name': editedTitle,
+          'path': path,
+        }] })
+    setEdit(false);
+    getFavorites();
+    }
+   ```
+
 ## Preview
 ![Screenshot](preview.jpeg)
 
