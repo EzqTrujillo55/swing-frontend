@@ -1,13 +1,12 @@
-# PhoneBook Android 
+# Swing App 
 
-_Aplicación móvil nativa de Agenda de contactos._
+_Aplicación hibrida de descarga local y remota de música._
 
 ## Comenzando 🚀
 
 _Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
 
-Mira **Deployment** para conocer como desplegar el proyecto, también puedes probar directamente la app, descárgala de aquí 
-https://github.com/EzqTrujillo55/phonebook-android/blob/master/ContactsBook.apk
+Mira **Deployment** para conocer como desplegar el proyecto. 
 
 ### Pre-requisitos 📋
 
@@ -18,8 +17,9 @@ _Android Studio_
 
 ```
 1. Ejecutar el siguiente comando: git clone url de este repositorio
-2. Abrir el proyecto en Android Studio
-3. Click en el icono de ejecución. 
+2. Abrir el proyecto en cmd
+3. Ejecutar npm install. 
+4. Ejecutar con ionic serve o ionic capacitor run android 
 4. Importante haber creado antes dispositivos virtuales para ver la app en ejecución o conectar un dispositivo físico con la depuración USB Activada
 ```
 
@@ -27,6 +27,7 @@ _Android Studio_
 ## Despliegue 📦
 
 ```
+1. Ejecutar ionic capacitor build android 
 1. En android studio click en Build, luego en Generate signed bundle / apk
 2. Seguir los pasos del asistente
 ```
@@ -100,7 +101,7 @@ _Android Studio_
 
 
 ## Video Demostrativo
-https://drive.google.com/file/d/10H5-D0sXGkmYVzOTDaxQBtWhpacmmY9T/view?usp=drivesdk
+
 
 ## Construido con 🛠️
 
